@@ -125,10 +125,12 @@ def run_module():
 
     # Create the subfolder if it doesn't exist
     subfolder_path.mkdir(parents=True, exist_ok=True)
-
+    try:
     # Open the file in write mode and write content
-    with open(file_path, "w") as f:
-        f.write(module.params["content"])
+        with open(file_path, "x") as f:
+            f.write(module.params["content"])
+    except FileExistsError:
+        result['message'] = 'created'
 
     # in the event of a successful module execution, you will want to
     # simple AnsibleModule.exit_json(), passing the key/value results
