@@ -4,5 +4,5 @@
   tasks:
     - name: task to create file
       bars_namespace.netology.my_own_module:
-        path: "/tmp/newtask"
+        path: "/tmp/newtask1"
         content: "File content during task processc"

@@ -110,9 +110,6 @@ def run_module():
     result['original_message'] = module.params['path']
     result['message'] = 'created'
 
-    # use whatever logic you need to determine whether or not this module
-    # made any modifications to your target
-    result['changed'] = True
 
     # during the execution of the module, if there is an exception or a
     # conditional state that effectively causes a failure, run
@@ -126,12 +123,18 @@ def run_module():
     # Create the subfolder if it doesn't exist
     subfolder_path.mkdir(parents=True, exist_ok=True)
 
+    # Create the subfolder if it doesn't exist
+    subfolder_path.mkdir(parents=True, exist_ok=True)
     try:
     # Open the file in write mode and write content
         with open(file_path, "x") as f:
             f.write(module.params["content"])
+            # use whatever logic you need to determine whether or not this module
+            # made any modifications to your target
+            result['changed'] = True
     except FileExistsError:
         result['message'] = 'created'
+        result['changed'] = False
 
     # in the event of a successful module execution, you will want to
     # simple AnsibleModule.exit_json(), passing the key/value results
