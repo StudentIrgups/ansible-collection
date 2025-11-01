@@ -128,13 +128,20 @@ def run_module():
     try:
     # Open the file in write mode and write content
         with open(file_path, "x") as f:
-            f.write(module.params["content"])
+            f.write(module.params["content"])            
             # use whatever logic you need to determine whether or not this module
             # made any modifications to your target
             result['changed'] = True
     except FileExistsError:
-        result['message'] = 'created'
-        result['changed'] = False
+        with open(file_path, "r+") as f:
+            file_content = f.read()
+            if file_content != module.params["content"]:                
+                f.seek(0)
+                f.write(module.params["content"])
+                f.truncate(len(module.params["content"]))
+                result['changed'] = True
+            else:
+                result['changed'] = False
 
     # in the event of a successful module execution, you will want to
     # simple AnsibleModule.exit_json(), passing the key/value results
